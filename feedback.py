@@ -34,17 +34,14 @@ def generate_cams(cam_extractor, model, inputs, class_indices):
     """
     # Save & prepare model modes
     was_training = model.training
-    model.train()              # ensure gradients
-    _freeze_batchnorm(model)   # freeze BN stats
+    model.train()
+    _freeze_batchnorm(model)
 
     cams = []
     for img_tensor, cls in zip(inputs, class_indices):
-        input_batch = img_tensor.unsqueeze(0)  # 1xCxHxW, requires_grad=True by default
+        input_batch = img_tensor.unsqueeze(0)
 
-        # Forward pass
         out = model(input_batch)
-
-        # TorchCAM call (this will backprop under the hood)
         activation_map = cam_extractor(cls.item(), out)[0]  # shape H×W
 
         # Normalize & overlay
@@ -74,7 +71,7 @@ def ask_llm(cam_images, labels, confidences):
         else:
             cam_np = np.array(cam_img)
 
-        # Squeeze out any leading singleton dims: now dims ≤4
+        # Squeeze out any leading singleton dims
         cam_np = np.squeeze(cam_np)
         # After squeeze, cam_np could be:
         #  - (H, W, 3)
