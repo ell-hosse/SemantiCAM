@@ -1,0 +1,10 @@
+# Hyperparameters & settings
+NUM_CLASSES = 9  # For PathMNIST
+IMAGE_SIZE = 28
+BATCH_SIZE = 64
+EPOCHS = 20
+LR = 1e-4
+ALPHA = 0.2
+HIGH_CONF = 0.95
+LOW_CONF = 0.2
+OPENROUTER_API_KEY = "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"
